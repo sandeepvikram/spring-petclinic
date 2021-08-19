@@ -6,7 +6,7 @@ pipeline {
         pollSCM ('* * * * *')
     }
     parameters {
-        string(name: 'GIT_BRANCH', defaultValue: 'master', description: 'git branch')
+        string(name: 'GIT_BRANCH', defaultValue: 'main', description: 'git branch')
         choice(name: 'GOAL', choices: ['package', 'cleanpackage', 'install'], description: 'Goals names choices')
     }
     options {
