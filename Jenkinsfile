@@ -1,6 +1,5 @@
 pipeline {
     agent { label 'SPC'}
-        
     triggers {
         pollSCM ('* * * * *')
     }
@@ -9,7 +8,7 @@ pipeline {
     }
     options {
         timeout(time: 1, unit: 'HOURS')
-        retry(2)       
+        retry(2)
     }
     stages {
         stage('scm') {
@@ -26,12 +25,11 @@ pipeline {
                 buildd = 'MAVEN'
             }
             steps {
-                echo env.MAVEN
-                timeout(time: 10, unit: 'MINUTES') {
-                    sh "cd spring-petclinic"
-                    sh "./mvnw ${params.GOAL}"
-            } 
+                sh "cd spring-petclinic"
+                sh "./mvnw package"
+            }
         }
+    }
     post {
         success {
             archive '**/*.war'
@@ -39,11 +37,10 @@ pipeline {
             echo 'The build is successfull'
         }
         failure {
-            echo 'The build has failed'
+            echo 'This build has failed'
         }
         always {
             echo 'This is good'
         }
-
     }
 }
