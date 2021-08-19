@@ -6,7 +6,7 @@ pipeline {
         pollSCM ('* * * * *')
     }
     parameters {
-        string(name: 'GIT_BRANCH', defaultValue: 'main', description: 'git branch')
+        string(name: 'BRANCH', defaultValue: 'main', description: 'git branch')
         choice(name: 'GOAL', choices: ['package', 'cleanpackage', 'install'], description: 'Goals names choices')
     }
     options {
@@ -14,7 +14,7 @@ pipeline {
         timeout(time: 1, unit: 'HOURS')
     }
     stages {
-        stage(scm)
+        stage('scm')
         environment {
             SOURCECM = 'GITHUB'
         }
@@ -22,7 +22,7 @@ pipeline {
             git branch: "${params.BRANCH}", url: 'https://github.com/sandeepvikram/spring-petclinic.git'
             echo env.SOURCECM
         }
-        stage(build)
+        stage('build')
         environment {
             buildd = 'MAVEN'
         }
