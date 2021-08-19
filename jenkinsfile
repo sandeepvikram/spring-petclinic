@@ -19,7 +19,7 @@ pipeline {
             SOURCECM = 'GITHUB'
         }
         steps {
-            git branch: "${params.BRANCH}", url: ''
+            git branch: "${params.BRANCH}", url: 'https://github.com/sandeepvikram/spring-petclinic.git'
             echo env.SOURCECM
         }
         stage(build)
