@@ -24,8 +24,10 @@ pipeline {
             environment {
                 buildd = 'MAVEN'
             }
+            options {
+                options { checkoutToSubdirectory('spring-petclinic') }
+            }
             steps {
-                sh "cd spring-petclinic"
                 sh "./mvnw package"
             }
         }
