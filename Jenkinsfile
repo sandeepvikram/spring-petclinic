@@ -9,7 +9,7 @@ pipeline {
     options {
         timeout(time: 1, unit: 'HOURS')
         retry(2)
-        options { checkoutToSubdirectory('spring-petclinic') }
+        checkoutToSubdirectory('spring-petclinic') 
     }
     stages {
         stage('scm') {
