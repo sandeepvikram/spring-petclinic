@@ -1,0 +1,52 @@
+pipeline {
+    agent {
+        label 'SPC'
+    }
+    triggers {
+        pollSCM ('* * * * *')
+    }
+    parameters {
+        string(name: 'GIT_BRANCH', defaultValue: 'master', description: 'git branch')
+        choice(name: 'GOAL', choices: ['package', 'cleanpackage', 'install'], description: 'Goals names choices')
+    }
+    options {
+        retry(2)
+        timeout(time: 1, unit: 'HOURS')
+    }
+    stages {
+        stage(scm)
+        environment {
+            SOURCECM = 'GITHUB'
+        }
+        steps {
+            git branch: "${params.BRANCH}", url: ''
+            echo env.SOURCECM
+        }
+        stage(build)
+        environment {
+            buildd = 'MAVEN'
+        }
+        steps {
+            echo env.MAVEN
+            timeout(time: 10, unit: 'MINUTES') {
+                sh "cd spring-petclinic"
+                sh "./mvnw ${params.GOAL}"
+            }
+        }
+
+    }
+    post {
+        success {
+            archive '**/*.war'
+            junit '**/TEST-*.xml'
+            echo 'The build is successfull'
+        }
+        failure {
+            echo 'The build has failed'
+        }
+        always {
+            echo 'This is good'
+        }
+
+    }
+}
