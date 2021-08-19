@@ -9,6 +9,7 @@ pipeline {
     options {
         timeout(time: 1, unit: 'HOURS')
         retry(2)
+        options { checkoutToSubdirectory('spring-petclinic') }
     }
     stages {
         stage('scm') {
@@ -23,9 +24,6 @@ pipeline {
         stage('build') {
             environment {
                 buildd = 'MAVEN'
-            }
-            options {
-                options { checkoutToSubdirectory('spring-petclinic') }
             }
             steps {
                 sh "./mvnw package"
